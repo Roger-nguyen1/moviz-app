@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Text } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function Index() {
@@ -8,7 +8,7 @@ export default function Index() {
   useEffect(() => {
     setTimeout(() => {
       router.push({ pathname: "moviesList" });
-    }, 2500);
+    }, 2900);
   }, []);
 
   return (
@@ -17,19 +17,22 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#050251",
       }}
     >
       <Image
         style={styles.logo}
-        source={require("../assets/images/newlogo.jpg")}
+        source={require("../assets/images/newlogo2.png")}
       />
+      <Text style={styles.title}>Find a Movie!</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   logo: {
-    width: 370,
-    height: 370,
+    width: 380,
+    height: 380,
   },
+  title: { color: "white", fontSize: 28 },
 });
