@@ -8,18 +8,11 @@ export default function Index() {
   useEffect(() => {
     setTimeout(() => {
       router.replace({ pathname: "moviesList" });
-    }, 2900);
+    }, 2000);
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#050251",
-      }}
-    >
+    <View style={styles.container}>
       <Image
         style={styles.logo}
         source={require("../assets/images/newlogo2.png")}
@@ -30,9 +23,15 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#050251",
+  },
   logo: {
     width: 380,
     height: 380,
   },
-  title: { color: "#f3f6f4", fontSize: 28 },
+  title: { color: "#f3f6f4", fontSize: 30, fontFamily: "Pacifico_400Regular" },
 });
