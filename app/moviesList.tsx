@@ -4,11 +4,14 @@ import axios from "axios";
 import {
   View,
   Text,
-  ActivityIndicator,
   StyleSheet,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { ListItem, Image } from "@rneui/themed";
+import { Shadow } from "react-native-shadow-2";
+import LoadingAnimation from "@/components/Loading";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const apikey = process.env.EXPO_PUBLIC_API_KEY;
 interface Movie {
@@ -25,82 +28,107 @@ export default function MoviesList() {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get(`https://api.themoviedb.org/3/movie/popular?api_key=${apikey}`)
-      .then((response) => {
-        setMovies(response.data.results);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
+    setTimeout(() => {
+      axios
+        .get(`https://api.themoviedb.org/3/movie/popular?api_key=${apikey}`)
+        .then((response) => {
+          setMovies(response.data.results);
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, 1000);
   }, []);
 
   if (loading) {
-    return <ActivityIndicator size="large" style={styles.loading} />;
+    return <LoadingAnimation />;
   }
 
   if (error) {
-    return (
-      <View
-        style={{
-          marginTop: 25,
-        }}
-      >
-        <Text>Error: {error.message}</Text>
-      </View>
-    );
+    return <ErrorMessage message={error.message} />;
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 15,
-      }}
-    >
+    <View style={styles.container}>
+      <Text style={styles.headerTitle}>Most popular movies</Text>
       <FlatList
         data={movies}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ListItem
-            bottomDivider
+            containerStyle={{
+              backgroundColor: "#050251",
+              flex: 1,
+              flexDirection: "column",
+            }}
             onPress={() =>
               router.push({
-                pathname: "details",
+                pathname: "movieDetails",
                 params: { movie: JSON.stringify(item) },
               })
             }
           >
-            <Image
-              source={{
-                uri: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
-              }}
-              style={styles.image}
-            />
+            <Shadow startColor={"#3d85c6"}>
+              <Image
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
+                }}
+                style={styles.image}
+              />
+            </Shadow>
             <ListItem.Content>
-              <ListItem.Title>{item.title}</ListItem.Title>
+              <ListItem.Title
+                style={{
+                  color: "#f3f6f4",
+                  fontWeight: "bold",
+                  marginTop: 12,
+                  fontSize: 22,
+                  textAlign: "center",
+                }}
+              >
+                {item.title}
+              </ListItem.Title>
             </ListItem.Content>
-            <ListItem.Chevron />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                paddingLeft: 5,
+                marginTop: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "#f3f6f4", paddingBottom: 4 }}>
+                details
+              </Text>
+              <ListItem.Chevron />
+            </View>
           </ListItem>
         )}
       />
-      {loading && <ActivityIndicator size="large" style={styles.loading} />}
-      <Text>moviesList screen</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  loading: {
+  container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#050251",
+  },
+  headerTitle: {
+    fontSize: 28,
+    color: "#f3f6f4",
+    marginTop: 5,
+    marginBottom: 10,
   },
   image: {
-    width: 50,
-    height: 75,
+    width: 190,
+    height: 270,
   },
 });

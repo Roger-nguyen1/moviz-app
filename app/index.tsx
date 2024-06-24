@@ -7,7 +7,7 @@ export default function Index() {
 
   useEffect(() => {
     setTimeout(() => {
-      router.push({ pathname: "moviesList" });
+      router.replace({ pathname: "moviesList" });
     }, 2900);
   }, []);
 
@@ -34,5 +34,5 @@ const styles = StyleSheet.create({
     width: 380,
     height: 380,
   },
-  title: { color: "white", fontSize: 28 },
+  title: { color: "#f3f6f4", fontSize: 28 },
 });
