@@ -92,16 +92,7 @@ export default function MoviesList() {
                 {item.title}
               </ListItem.Title>
             </ListItem.Content>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                paddingLeft: 5,
-                marginTop: 10,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <View style={styles.detailsContainer}>
               <Text style={{ color: "#f3f6f4", paddingBottom: 4 }}>
                 details
               </Text>
@@ -130,5 +121,13 @@ const styles = StyleSheet.create({
   image: {
     width: 190,
     height: 270,
+  },
+  detailsContainer: {
+    flex: 1,
+    flexDirection: "row",
+    paddingLeft: 5,
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
