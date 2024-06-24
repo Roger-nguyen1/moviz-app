@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#050251",
   },
   loadingText: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 30,
     color: "#f3f6f4",
     marginBottom: 35,
+    fontFamily: "Pacifico_400Regular",
   },
   logo: {
     width: 300,
