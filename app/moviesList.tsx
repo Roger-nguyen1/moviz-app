@@ -6,19 +6,23 @@ import {
   Text,
   StyleSheet,
   FlatList,
+  TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
 import { ListItem, Image } from "@rneui/themed";
 import { Shadow } from "react-native-shadow-2";
 import LoadingAnimation from "@/components/Loading";
 import ErrorMessage from "@/components/ErrorMessage";
+import navigateToDetails from "@/utils/navigateToDetails";
 
 const apikey = process.env.EXPO_PUBLIC_API_KEY;
-interface Movie {
+type Movie = {
   id: number;
   title: string;
   poster_path: string;
-}
+  overview: string;
+  release_date: string;
+};
 
 export default function MoviesList() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -40,7 +44,7 @@ export default function MoviesList() {
         .finally(() => {
           setLoading(false);
         });
-    }, 1000);
+    }, 500);
   }, []);
 
   if (loading) {
@@ -59,11 +63,7 @@ export default function MoviesList() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ListItem
-            containerStyle={{
-              backgroundColor: "#050251",
-              flex: 1,
-              flexDirection: "column",
-            }}
+            containerStyle={styles.listItemContainer}
             onPress={() =>
               router.push({
                 pathname: "movieDetails",
@@ -71,33 +71,30 @@ export default function MoviesList() {
               })
             }
           >
-            <Shadow startColor={"#3d85c6"}>
-              <Image
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
-                }}
-                style={styles.image}
-              />
-            </Shadow>
+            <TouchableHighlight onPress={() => navigateToDetails(item)}>
+              <Shadow startColor={"#3d85c6"}>
+                <Image
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
+                  }}
+                  style={styles.image}
+                />
+              </Shadow>
+            </TouchableHighlight>
+
             <ListItem.Content>
-              <ListItem.Title
-                style={{
-                  color: "#f3f6f4",
-                  fontWeight: "bold",
-                  marginTop: 12,
-                  fontSize: 22,
-                  textAlign: "center",
-                }}
-              >
+              <ListItem.Title style={styles.movieTitle}>
                 {item.title}
               </ListItem.Title>
             </ListItem.Content>
-            <View style={styles.detailsContainer}>
-              <Text style={{ color: "#f3f6f4", paddingBottom: 4 }}>
-                details
-              </Text>
+
+            <TouchableOpacity
+              style={styles.detailsContainer}
+              onPress={() => navigateToDetails(item)}
+            >
+              <Text style={styles.detailText}>details</Text>
               <ListItem.Chevron />
-            </View>
+            </TouchableOpacity>
           </ListItem>
         )}
       />
@@ -115,8 +112,21 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     color: "#f3f6f4",
-    marginTop: 5,
+    marginTop: 22,
     marginBottom: 10,
+    fontFamily: "Montserrat_600SemiBold",
+  },
+  listItemContainer: {
+    backgroundColor: "#050251",
+    flex: 1,
+    flexDirection: "column",
+  },
+  movieTitle: {
+    color: "#f3f6f4",
+    marginTop: 12,
+    fontSize: 22,
+    textAlign: "center",
+    fontFamily: "Montserrat_600SemiBold",
   },
   image: {
     width: 190,
@@ -129,5 +139,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 3,
+    backgroundColor: "#3d85c6",
+  },
+  detailText: {
+    color: "#f3f6f4",
+    paddingBottom: 4,
+    fontFamily: "Montserrat_400Regular",
   },
 });
