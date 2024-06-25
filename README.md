@@ -9,10 +9,10 @@ En appuyant sur l'affiche du film ou le bouton details, on peut consulter une de
 
 1. Clone the repo
 
-   ```bash
+```bash
    git clone https://github.com/Roger-nguyen1/moviz-app.git
    cd moviz-app
-   ```
+```
 
 2. Install dependencies
 
