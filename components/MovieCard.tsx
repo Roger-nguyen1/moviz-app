@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Dimensions, View } from "react-native";
 import { Card, Image } from "@rneui/themed";
 import formatDate from "@/utils/formatDate";
 
@@ -9,16 +9,23 @@ interface Props {
   releaseDate: string;
 }
 
+const { width, height } = Dimensions.get("window");
+const imageWidth = width * 0.86;
+const imageHeight = height * 0.7;
+
 export default function MovieCard(props: Props) {
   return (
     <Card containerStyle={styles.cardContainer}>
       <Card.Title style={styles.title}>{props.title}</Card.Title>
-      <Image
-        source={{
-          uri: `https://image.tmdb.org/t/p/w500${props.poster}`,
-        }}
-        style={styles.image}
-      />
+      <View style={styles.imageContainer}>
+        <Image
+          resizeMode="contain"
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500${props.poster}`,
+          }}
+          style={styles.image}
+        />
+      </View>
       <Text style={styles.text}>{props.overview}</Text>
       <Text style={styles.date}>
         Release Date: {formatDate(props.releaseDate)}
@@ -29,6 +36,8 @@ export default function MovieCard(props: Props) {
 
 const styles = StyleSheet.create({
   cardContainer: {
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#050251",
     paddingVertical: 20,
     borderRadius: 8,
@@ -41,6 +50,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_600SemiBold",
   },
   text: {
+    paddingHorizontal: 3,
     color: "#f3f6f4",
     fontFamily: "Montserrat_400Regular",
     marginBottom: 14,
@@ -49,10 +59,17 @@ const styles = StyleSheet.create({
     color: "#f3f6f4",
     fontFamily: "Montserrat_400Regular",
     marginBottom: 30,
+    paddingHorizontal: 3,
   },
   image: {
-    height: 460,
-    width: "100%",
+    height: imageHeight,
+    width: imageWidth,
     marginBottom: 14,
+  },
+  imageContainer: {
+    width: imageWidth,
+    height: imageHeight,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

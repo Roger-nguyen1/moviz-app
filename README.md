@@ -34,9 +34,9 @@ EXPO_PUBLIC_API_KEY="cle_API"
 
 4. Start the app
 
-   ```bash
-    npx expo start
-   ```
+```bash
+   npx expo start
+```
 
 Vous trouverez des options pour ouvrir l'application avec les outils suivant:
 
